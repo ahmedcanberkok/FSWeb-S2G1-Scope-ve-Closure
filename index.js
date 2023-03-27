@@ -30,10 +30,12 @@ console.log('örnek görev:', ilkiniDon(['as','sa'],function(metin){return metin
   Aşağıdaki skor1 ve skor2 kodlarını inceleyiniz ve aşağıdaki soruları altına not alarak cevaplayın
   
   1. skor1 ve skor2 arasındaki fark nedir?
-  
+  skor1 nested fonksiyondur. Skor degiskenini fonksiyonun içinde saklar
   2. Hangisi bir closure kullanmaktadır? Nasıl tarif edebilirsin? (yarınki derste öğreneceksin :) )
-  
+   Skor1 de closure kullanilmaktadir. 
   3. Hangi durumda skor1 tercih edilebilir? Hangi durumda skor2 daha mantıklıdır?
+   Güvenlik nedeyile direkt olarak skor degerine erisilmesinin istenmedigi durumlarda skor1 kullanilabilir. global içerisinde
+   herhangi bir yerden erişilmesi gereken, tekrar yazilmasi gereken verileri kullanmak mantikli olabilir.
 */
 
 // skor1 kodları
@@ -63,12 +65,12 @@ Aşağıdaki takimSkoru() fonksiyonununda aşağıdakileri yapınız:
   
 Not: Bu fonskiyon, aşağıdaki diğer görevler için de bir callback fonksiyonu olarak da kullanılacak
 */
-
-function takimSkoru(/*Kodunuzu buraya yazınız*/){
-    /*Kodunuzu buraya yazınız*/
+function takimSkoru(){
+  let score =Math.floor(Math.random() * 9) +10 ;;
+  return score;
 }
-
-
+let puan = takimSkoru();      
+console.log(puan);
 
 
 /* Görev 3: macSonucu() 
@@ -86,10 +88,23 @@ Aşağıdaki macSonucu() fonksiyonununda aşağıdakileri yapınız:
 }
 */ 
 
-function macSonucu(/*Kodunuzu buraya yazınız*/){
-  /*Kodunuzu buraya yazınız*/
+function macSonucu(callback,ceyrekSkoru){
+  let EvSahibiSkor= 0 ;
+  let DeplasmanSkor= 0;
+  for(let i= 1 ; i<= ceyrekSkoru; i++) {
+    let EvSahibiCeyrekSkoru = takimSkoru ();
+    let DeplasmanCeyrekSkoru =takimSkoru () ;
+     EvSahibiSkor += EvSahibiCeyrekSkoru ;
+     DeplasmanSkor += DeplasmanCeyrekSkoru ;
+     console.log(`Çeyrek ${i} Skoru: Ev Sahibi ${EvSahibiCeyrekSkoru} - Konuk Takım ${DeplasmanCeyrekSkoru}`);
+  }
+  return {
+    "EvSahibi": EvSahibiSkor,
+    "KonukTakim": DeplasmanSkor
+};
 }
-
+let sonuc = macSonucu(takimSkoru, 4);
+console.log(sonuc);
 
 
 
@@ -109,8 +124,18 @@ Aşağıdaki periyotSkoru() fonksiyonununda aşağıdakileri yapınız:
   */
 
 
-function periyotSkoru(/*Kodunuzu buraya yazınız*/) {
-  /*Kodunuzu buraya yazınız*/
+function periyotSkoru(takimSkoru) {
+ let EvSahibiSkor = takimSkoru () ;
+ let DeplasmanSkor = takimSkoru () ;
+ return { 
+  "EvSahibi": EvSahibiSkor ,
+  "Deplasman": DeplasmanSkor,
+
+ } ;
+ let periyotSonucu = periyotSkoru(takimSkoru) ;
+console.log(periyotSonucu) ;
+
+
 
 }
 
@@ -120,7 +145,8 @@ Aşağıdaki skorTabelasi() fonksiyonunu kullanarak aşağıdakileri yapınız:
   1. İlk parametre olarak Görev 4'te oluşturduğumuz 'periyotSkoru'nu bir değişken olarak almalı
   2. İkinci parametre olarak Gröev 2'de oluşturduğumuz 'takimSkoru'nu bir değişken olarak almalı
   3. Üçüncü parametre olarak da oynanacak olan çeyrek sayısını alın
-  4. Her bir çeyreğin sonucunu bir string olarak bir array içinde dönün. Aşadaki örnek gibi olmalı. Her çeyrekteki atılan sayıları ayrı ayrı yazmalı(toplam skoru değil!).
+  4. Her bir çeyreğin sonucunu bir string olarak bir array içinde dönün. Aşadaki örnek gibi olmalı. Her çeyrekteki atılan sayıları ayrı
+   ayrı yazmalı(toplam skoru değil!).
   5. Eğer maç berabere biterse uzatmalar oynanmalı ve "Uzatma 1: Ev Sahibi 13 - Konuk Takım 11" eklemeli. (Her uzatma için ayrı ayrı eklemeli)
   6. Maç bitince de final skoru yazmalı: "Maç Sonucu: Ev Sahibi 101 - Konuk Takım 98"
 
@@ -145,12 +171,26 @@ MAÇ UZAR ise skorTabelasi(periyotSkoru,takimSkoru,4)
 ]
 ] */
 // NOTE: Bununla ilgili bir test yoktur. Eğer logladığınız sonuçlar yukarıdakine benziyor ise tmamlandı sayabilirsiniz.
+/*
+function skorTabelasi(periyotSkoru,takimSkoru,ceyrekSayisi) {
 
-function skorTabelasi(/*Kodunuzu buraya yazınız*/) {
-  /*Kodunuzu buraya yazınız*/
+  for(let i = 1; i <= ceyrekSayisi; i++){
+    let periyotSonucu = periyotSkoru(takimSkoru);
+    let EvSahibiCeyrekSkoru = periyotSonucu.EvSahibi;
+    let KonukTakimCeyrekSkoru = periyotSonucu.KonukTakim;
+
+    EvSahibiToplamSkor += EvSahibiCeyrekSkoru;
+    KonukTakimToplamSkor += KonukTakimCeyrekSkoru;
+
+    skorTablosu.push(`${i}. Periyot: Ev Sahibi ${EvSahibiCeyrekSkoru} - Konuk Takım ${KonukTakimCeyrekSkoru}`);
 }
 
 
+
+
+let Macsonuc = skorTablosu(periyotSkoru, takimSkoru, 4);
+console.log(Macsonuc);
+*/
 
 
 /* Aşağıdaki satırları lütfen değiştirmeyiniz*/
